@@ -1,0 +1,7 @@
+src/__pycache__/__init__.cpython-312.pyc
+src/__pycache__/board.cpython-312.pyc
+src/__pycache__/food.cpython-312.pyc
+src/__pycache__/game.cpython-312.pyc
+src/__pycache__/pos.cpython-312.pyc
+src/__pycache__/snake.cpython-312.pyc
+.DS_Store
