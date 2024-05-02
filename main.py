@@ -15,6 +15,8 @@ while(1):
         myGame.mySnake.eat()
     elif inp == 'm':
         myGame.mySnake.move()
+    elif inp== 's':
+        myGame.mySnake.starve()
     else:
         pass  
 

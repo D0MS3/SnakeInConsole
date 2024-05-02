@@ -8,34 +8,53 @@ BOARD_WIDTH=10
 BOARD_HEIGHT=10
 SNAKE_START_POS=[5,5]
 SNAKE_START_DIR=[1,0]
-NUM_FOOD=15
+NUM_FOOD=3
 
 class Game:
     def __init__(self):
         self.myBoard=Board(BOARD_WIDTH,BOARD_HEIGHT)
         self.mySnake=Snake(SNAKE_START_POS,SNAKE_START_DIR)
-        self.myFoods=self.createFoods(NUM_FOOD)
+        self.myFoods=self.createRndFoods(NUM_FOOD)
 
-    def createFoods(self,numFood:int):
+    def createRndFoods(self,numFood:int):
         foods=[]
         for i in range(numFood):
             foods.append(Food([randrange(0,BOARD_HEIGHT),randrange(0, BOARD_WIDTH)]))
         return foods
+
+
+    def checkForBoundaries(self) -> bool:
+        for ele in self.mySnake.snakeElements:
+            if(ele.actPosition[0]>=BOARD_WIDTH 
+               or ele.actPosition[1]>=BOARD_HEIGHT
+               or ele.actPosition[0]<0 
+               or ele.actPosition[1]<0):
+                print("out of bounce --> LOST!")
+                exit()
+
+    def checkBoundaries2(s: Snake, b: Board) -> bool:
+        # checks if snake is within Board boundaries
+        # TODO
+        pass
+
+    def checkForFood(self):
+        for food in self.myFoods:
+            if(np.array_equal(food.actPosition,self.mySnake.snakeElements[0].actPosition)):
+                self.myFoods.remove(food)
+                self.mySnake.eat()
+        if(not self.myFoods):
+                self.myFoods.extend(self.createRndFoods(NUM_FOOD))
+
+    def checkForSelfCollision(self):
+        for ele in self.mySnake.snakeElements[1:]:
+            if np.array_equal(ele.actPosition,self.mySnake.snakeElements[0].actPosition):
+                print("self collision --> LOST!")
+                exit()
     
-    def createRndFood(self):
-        self.food=Food([randrange(0,BOARD_HEIGHT),randrange(0, BOARD_WIDTH)])
-    
-    def update(self):    
-        for f in self.myFoods:
-            if(np.array_equal(f.actPosition,self.mySnake.snakeElements[0].actPosition)):
-               # delete food
-               self.myFoods.remove(f)
-               # increase snake length
-               self.mySnake.eat()
-    
-               
-      
-        # boundaries checken???
+    def update(self): 
+        self.checkForFood()
+        self.checkForBoundaries()
+        self.checkForSelfCollision()
         # move snake auswerten
 
     def clearBoard(self):

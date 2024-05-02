@@ -1,6 +1,4 @@
 import numpy as np
-from src.pos import Pos
-
 
 class SnakeElement:
 
@@ -11,13 +9,18 @@ class SnakeElement:
 class Snake:
         
     def __init__(self, startPosition, startDirection):
+        # define snake as list of single elements
         self.snakeElements =[]
+        # create first snake element
         self.snakeElements.append(SnakeElement(startPosition,startDirection))
 
     def eat(self):
-
         evalPos = np.subtract(self.snakeElements[-1].actPosition,self.snakeElements[-1].actDirection)
         self.snakeElements.append(SnakeElement(evalPos,self.snakeElements[-1].actDirection))
+
+    def starve(self):
+        if len(self.snakeElements)>1:
+            self.snakeElements.pop()
 
     def move(self):
         # update positions
@@ -28,7 +31,9 @@ class Snake:
             self.snakeElements[i].actDirection = np.copy(self.snakeElements[i-1].actDirection)
 
     def turnLeft(self):
-        self.snakeElements[0].actDirection = np.matmul( self.snakeElements[0].actDirection,np.array([[0,1],[-1,0]]))
+        rotMat = np.array([[0,1],[-1,0]])
+        self.snakeElements[0].actDirection = np.matmul( self.snakeElements[0].actDirection, rotMat)
 
     def turnRight(self):
-         self.snakeElements[0].actDirection = np.matmul( self.snakeElements[0].actDirection,np.array([[0,-1],[1,0]]))
+         rotMat = np.array([[0,-1],[1,0]])
+         self.snakeElements[0].actDirection = np.matmul( self.snakeElements[0].actDirection, rotMat)
